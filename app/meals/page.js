@@ -1,7 +1,9 @@
 import classes from './page.module.css'
 import Link from 'next/link'
 import MealsGrid from './meals-grid'
-export default function Meal(){
+import { getMeals } from '../lib/meals'
+export default async function Meal(){
+    const meals = await getMeals();
     return <>
     <header className={classes.header}>
         <h1>Delicious meals, created {' '}<span className={classes.highlight}>by you</span></h1>
@@ -11,6 +13,6 @@ export default function Meal(){
         </p>
     </header>
     <main className={classes.main}>
-        <MealsGrid meals={[]}/></main>
+        <MealsGrid meals={meals}/></main>
         </>
 }
