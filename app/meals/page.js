@@ -1,9 +1,15 @@
+import { Suspense } from 'react'
 import classes from './page.module.css'
 import Link from 'next/link'
 import MealsGrid from './meals-grid'
 import { getMeals } from '../lib/meals'
-export default async function Meal(){
+
+async function Meals(){
     const meals = await getMeals();
+    return <MealsGrid meals={meals}/>
+}
+
+export default function Meal(){
     return <>
     <header className={classes.header}>
         <h1>Delicious meals, created {' '}<span className={classes.highlight}>by you</span></h1>
@@ -13,6 +19,9 @@ export default async function Meal(){
         </p>
     </header>
     <main className={classes.main}>
-        <MealsGrid meals={meals}/></main>
+       <Suspense fallback={<p className={classes.loading}>Fetching Meals....</p>}> 
+       <Meals />
+       </Suspense>
+       </main>
         </>
 }
