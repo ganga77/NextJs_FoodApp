@@ -1,5 +1,27 @@
-//This page can be reached as localhost/3000/type-anything
-export default function MealsDetails(){
+import classes from './page.module.css'
+import Image from 'next/image'
+import { getMeal } from '@/app/lib/meals'
+export default function MealsDetails({params}){
+    const meal = getMeal(params.mealsSlug);
+    meal.instructions = meal.instructions.replace(/\n/g, '<br />')
     return <>
-    <h1>Random Meals</h1></>
-}
+    <header className={classes.header}>
+        <div className={classes.image}>
+            <Image src={meal.image} alt={meal.title} fill/>
+        </div>
+        <div className={classes.headerText}>
+            <h1>{meal.title}</h1>
+            <p className={classes.creator}>
+                by <a href={`mailto:${meal.creator_email}`}>{meal.creator}</a>
+            </p>
+            <p className={classes.summary}>{meal.summary}</p>
+        </div>
+    </header>
+    <main>
+        <p className={classes.instructions}
+        dangerouslySetInnerHTML={{
+            __html: meal.instructions
+        }}></p>
+    </main>
+    </>
+} 
